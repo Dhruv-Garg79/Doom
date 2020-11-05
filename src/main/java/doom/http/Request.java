@@ -6,7 +6,7 @@ public class Request {
     private String path;
     private HttpMethods method;
 
-    public Request(HttpExchange exchange){
+    public Request(HttpExchange exchange) {
         path = exchange.getRequestURI().getPath();
         method = HttpMethods.valueOf(exchange.getRequestMethod());
     }

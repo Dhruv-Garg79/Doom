@@ -31,12 +31,18 @@ public class DoomServer {
             httpServer.start();
             logger.info("started");
 
-        } catch (IOException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+        } catch (IOException
+                | NoSuchMethodException
+                | IllegalAccessException
+                | InvocationTargetException
+                | InstantiationException e) {
             e.printStackTrace();
         }
     }
 
-    private void loadAllRoutes() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    private void loadAllRoutes()
+            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException,
+                    InstantiationException {
         String packageName = DoomServer.class.getPackageName();
         List<Class<?>> classes = Utils.getClassesInPackage(packageName);
 
@@ -54,48 +60,47 @@ public class DoomServer {
                         GET get = method.getAnnotation(GET.class);
                         httpMethod = GET.class.getAnnotation(HttpMethod.class);
                         reqPath = get.value();
-                    }
-                    else if (method.isAnnotationPresent(POST.class)) {
+                    } else if (method.isAnnotationPresent(POST.class)) {
                         POST get = method.getAnnotation(POST.class);
                         httpMethod = POST.class.getAnnotation(HttpMethod.class);
                         reqPath = get.value();
-                    }
-                    else if (method.isAnnotationPresent(PUT.class)) {
+                    } else if (method.isAnnotationPresent(PUT.class)) {
                         PUT get = method.getAnnotation(PUT.class);
                         httpMethod = PUT.class.getAnnotation(HttpMethod.class);
                         reqPath = get.value();
-                    }
-                    else if (method.isAnnotationPresent(PATCH.class)) {
+                    } else if (method.isAnnotationPresent(PATCH.class)) {
                         PATCH get = method.getAnnotation(PATCH.class);
                         httpMethod = PATCH.class.getAnnotation(HttpMethod.class);
                         reqPath = get.value();
-                    }
-                    else if (method.isAnnotationPresent(HEAD.class)) {
+                    } else if (method.isAnnotationPresent(HEAD.class)) {
                         HEAD get = method.getAnnotation(HEAD.class);
                         httpMethod = HEAD.class.getAnnotation(HttpMethod.class);
                         reqPath = get.value();
-                    }
-                    else if (method.isAnnotationPresent(DELETE.class)) {
+                    } else if (method.isAnnotationPresent(DELETE.class)) {
                         DELETE get = method.getAnnotation(DELETE.class);
                         httpMethod = DELETE.class.getAnnotation(HttpMethod.class);
                         reqPath = get.value();
                     }
 
                     if (httpMethod != null) {
-                        handler.addRoute(new Route(path.value() + reqPath, httpMethod.value(), request -> {
-                            String msg;
-                            try {
-                                System.out.println("In method");
-                                return (Response) method.invoke(obj, request);
-                            } catch (IllegalAccessException e) {
-                                msg = e.getLocalizedMessage();
-                            } catch (InvocationTargetException e) {
-                                e.printStackTrace();
-                                msg = e.getLocalizedMessage();
-                            }
+                        handler.addRoute(
+                                new Route(
+                                        path.value() + reqPath,
+                                        httpMethod.value(),
+                                        request -> {
+                                            String msg;
+                                            try {
+                                                System.out.println("In method");
+                                                return (Response) method.invoke(obj, request);
+                                            } catch (IllegalAccessException e) {
+                                                msg = e.getLocalizedMessage();
+                                            } catch (InvocationTargetException e) {
+                                                e.printStackTrace();
+                                                msg = e.getLocalizedMessage();
+                                            }
 
-                            return Response.error(msg);
-                        }));
+                                            return Response.error(msg);
+                                        }));
                     }
                 }
             }

@@ -14,7 +14,7 @@ import java.util.Map;
 class DoomHttpHandler implements HttpHandler {
     Map<String, Route> routes;
 
-    DoomHttpHandler(){
+    DoomHttpHandler() {
         this.routes = new HashMap<>();
     }
 
@@ -24,21 +24,20 @@ class DoomHttpHandler implements HttpHandler {
         Request request = new Request(exchange);
         Route route = getMatchingRoute(request.getPath(), request.getMethod());
 
-        if (route != null){
+        if (route != null) {
             response = route.processRequest(request);
-        }
-        else{
+        } else {
             response = Response.notFound();
         }
 
         response.send(exchange);
     }
 
-    public Route getMatchingRoute(String path, HttpMethods method){
+    public Route getMatchingRoute(String path, HttpMethods method) {
         return routes.get(method.toString() + path);
     }
 
-    public void addRoute(Route route){
+    public void addRoute(Route route) {
         routes.put(route.getMethod() + route.getPath(), route);
     }
 }

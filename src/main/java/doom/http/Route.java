@@ -5,13 +5,13 @@ public class Route {
     private HttpMethods method;
     private RequestHandler handler;
 
-    public Route(String path, HttpMethods method, RequestHandler handler){
+    public Route(String path, HttpMethods method, RequestHandler handler) {
         this.path = path;
         this.method = method;
         this.handler = handler;
     }
 
-    public Response processRequest(Request request){
+    public Response processRequest(Request request) {
         return handler.handle(request);
     }
 

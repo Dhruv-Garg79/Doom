@@ -1,8 +1,6 @@
 package doom.http;
 
-/**
- * Interface used to handle all http requests
- */
+/** Interface used to handle all http requests */
 public interface RequestHandler {
     /**
      * handles http request

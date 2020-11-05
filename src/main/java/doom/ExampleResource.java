@@ -9,7 +9,7 @@ import doom.http.Response;
 public class ExampleResource {
 
     @GET("/resource")
-    public Response getNames(Request request){
+    public Response getNames(Request request) {
         System.out.println("Holla senorita " + request.getPath());
         return new Response("Hello world!");
     }

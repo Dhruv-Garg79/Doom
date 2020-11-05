@@ -10,24 +10,22 @@ public class Response {
     String msg;
     int statusCode = 200;
 
-    public Response(){
+    public Response() {}
 
-    }
-
-    public Response(String message){
+    public Response(String message) {
         this.msg = message;
     }
 
-    public Response(String message, int statusCode){
+    public Response(String message, int statusCode) {
         this.msg = message;
         this.statusCode = statusCode;
     }
 
-    public static Response error(String msg){
+    public static Response error(String msg) {
         return new Response(msg, 504);
     }
 
-    public static Response notFound(){
+    public static Response notFound() {
         return new Response("Not found", 404);
     }
 
@@ -42,19 +40,11 @@ public class Response {
         outputStream.close();
     }
 
-    public void sendString(String str){
+    public void sendString(String str) {}
 
-    }
+    public void sendFile() {}
 
-    public void sendFile(){
+    public void sendJSON(JSONObject jsonObject) {}
 
-    }
-
-    public void sendJSON(JSONObject jsonObject){
-
-    }
-
-    public void sendBytes(byte[] data){
-
-    }
+    public void sendBytes(byte[] data) {}
 }

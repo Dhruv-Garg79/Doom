@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-class UsingSocketDirectlyServer implements Runnable{
+class UsingSocketDirectlyServer implements Runnable {
     // port to listen connection
     static final int PORT = 8080;
 
@@ -26,11 +26,13 @@ class UsingSocketDirectlyServer implements Runnable{
         ExecutorService executorService = Executors.newFixedThreadPool(2);
         try {
             ServerSocket serverConnect = new ServerSocket(PORT);
-            System.out.println("Server started.\nListening for connections on port : " + PORT + " ...\n");
+            System.out.println(
+                    "Server started.\nListening for connections on port : " + PORT + " ...\n");
 
             // we listen until user halts server execution
             while (true) {
-                UsingSocketDirectlyServer myServer = new UsingSocketDirectlyServer(serverConnect.accept());
+                UsingSocketDirectlyServer myServer =
+                        new UsingSocketDirectlyServer(serverConnect.accept());
 
                 if (verbose) {
                     System.out.println("Connecton opened. (" + new Date() + ")");
@@ -48,7 +50,9 @@ class UsingSocketDirectlyServer implements Runnable{
     @Override
     public void run() {
         // we manage our particular client connection
-        BufferedReader in = null; PrintWriter out = null; BufferedOutputStream dataOut = null;
+        BufferedReader in = null;
+        PrintWriter out = null;
+        BufferedOutputStream dataOut = null;
         String fileRequested = null;
 
         System.out.println(Thread.currentThread().getName() + " " + Thread.currentThread().getId());
@@ -70,7 +74,7 @@ class UsingSocketDirectlyServer implements Runnable{
             fileRequested = parse.nextToken().toLowerCase();
 
             // we support only GET and HEAD methods, we check
-            if (!method.equals("GET")  &&  !method.equals("HEAD")) {
+            if (!method.equals("GET") && !method.equals("HEAD")) {
                 if (verbose) {
                     System.out.println("501 Not Implemented : " + method + " method.");
                 }
@@ -98,7 +102,6 @@ class UsingSocketDirectlyServer implements Runnable{
                 if (verbose) {
                     System.out.println("resource requested" + fileRequested);
                 }
-
             }
 
         } catch (FileNotFoundException fnfe) {
@@ -126,7 +129,8 @@ class UsingSocketDirectlyServer implements Runnable{
         }
     }
 
-    private void fileNotFound(PrintWriter out, OutputStream dataOut, String fileRequested) throws IOException {
+    private void fileNotFound(PrintWriter out, OutputStream dataOut, String fileRequested)
+            throws IOException {
         out.println("HTTP/1.1 404 File Not Found");
         out.println("Server: Java HTTP Server from SSaurel : 1.0");
         out.println("Date: " + new Date());
@@ -137,5 +141,4 @@ class UsingSocketDirectlyServer implements Runnable{
             System.out.println("File " + fileRequested + " not found");
         }
     }
-
 }

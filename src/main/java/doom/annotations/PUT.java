@@ -13,4 +13,3 @@ import java.lang.annotation.Target;
 public @interface PUT {
     String value();
 }
-
