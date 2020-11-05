@@ -1,10 +1,7 @@
 package doom;
 
 import com.sun.net.httpserver.HttpServer;
-import doom.annotations.GET;
-import doom.annotations.HttpMethod;
-import doom.annotations.POST;
-import doom.annotations.Path;
+import doom.annotations.*;
 import doom.http.Response;
 import doom.http.Route;
 import doom.utils.Utils;
@@ -20,7 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 public class DoomServer {
-    private DoomHttpHandler handler = new DoomHttpHandler();
+    private final DoomHttpHandler handler = new DoomHttpHandler();
 
     public void start() {
         try {
@@ -58,10 +55,29 @@ public class DoomServer {
                         httpMethod = GET.class.getAnnotation(HttpMethod.class);
                         reqPath = get.value();
                     }
-
-                    if (method.isAnnotationPresent(POST.class)) {
+                    else if (method.isAnnotationPresent(POST.class)) {
                         POST get = method.getAnnotation(POST.class);
                         httpMethod = POST.class.getAnnotation(HttpMethod.class);
+                        reqPath = get.value();
+                    }
+                    else if (method.isAnnotationPresent(PUT.class)) {
+                        PUT get = method.getAnnotation(PUT.class);
+                        httpMethod = PUT.class.getAnnotation(HttpMethod.class);
+                        reqPath = get.value();
+                    }
+                    else if (method.isAnnotationPresent(PATCH.class)) {
+                        PATCH get = method.getAnnotation(PATCH.class);
+                        httpMethod = PATCH.class.getAnnotation(HttpMethod.class);
+                        reqPath = get.value();
+                    }
+                    else if (method.isAnnotationPresent(HEAD.class)) {
+                        HEAD get = method.getAnnotation(HEAD.class);
+                        httpMethod = HEAD.class.getAnnotation(HttpMethod.class);
+                        reqPath = get.value();
+                    }
+                    else if (method.isAnnotationPresent(DELETE.class)) {
+                        DELETE get = method.getAnnotation(DELETE.class);
+                        httpMethod = DELETE.class.getAnnotation(HttpMethod.class);
                         reqPath = get.value();
                     }
 
