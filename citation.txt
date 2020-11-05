@@ -1,0 +1,10 @@
+https://docs.gradle.org/current/samples/sample_building_java_libraries.html
+
+https://www.baeldung.com/java-custom-annotation
+
+https://stackoverflow.com/questions/6642909/providing-java-library-but-hiding-some-classes
+
+https://github.com/Simonwep/java-express
+
+https://www.hackerearth.com/practice/notes/asynchronous-servlets-in-java/
+
