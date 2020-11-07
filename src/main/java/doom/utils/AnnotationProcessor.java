@@ -1,10 +1,12 @@
 package doom.utils;
 
-import doom.http.annotations.*;
 import doom.http.Controller;
-import doom.middleware.MiddlewareProcessor;
 import doom.http.Response;
 import doom.http.Route;
+import doom.http.annotations.*;
+import doom.middleware.MiddleWare;
+import doom.middleware.MiddlewareAdder;
+import doom.middleware.MiddlewareHandler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -59,11 +61,21 @@ public class AnnotationProcessor {
 
                                 return Response.error(msg);
                             });
+
+            if (method.isAnnotationPresent(MiddleWare.class))
+                processMiddleware(method.getAnnotation(MiddleWare.class), route);
+
             controller.addRoute(route);
         }
     }
 
-    public void processMiddleware(MiddlewareProcessor middlewareProcessor){
+    public void processMiddleware(MiddleWare middleWare, MiddlewareAdder middlewareAdder){
+        Class<? extends MiddlewareHandler>[] classes = middleWare.value();
 
+        for (Class<? extends MiddlewareHandler> middlewareHandler : classes){
+            MiddlewareHandler handler = (MiddlewareHandler) Utils.getObjectForClass(middlewareHandler);
+            if (handler != null)
+                middlewareAdder.addMiddleware(handler);
+        }
     }
 }

@@ -3,6 +3,7 @@ package doom.server;
 import com.sun.net.httpserver.HttpServer;
 import doom.http.annotations.Path;
 import doom.http.Controller;
+import doom.middleware.MiddleWare;
 import doom.middleware.MiddlewareHandler;
 import doom.utils.AnnotationProcessor;
 import doom.utils.Utils;
@@ -56,6 +57,9 @@ public class DoomServer {
                 for (Method method : methods) {
                     annotationProcessor.processMethod(method, controller, obj);
                 }
+
+                if (mClass.isAnnotationPresent(MiddleWare.class))
+                    annotationProcessor.processMiddleware(mClass.getAnnotation(MiddleWare.class), controller);
 
                 handler.addController(controller);
             }
