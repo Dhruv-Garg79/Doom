@@ -1,7 +1,8 @@
 package doom.utils;
 
-import doom.annotations.*;
+import doom.http.annotations.*;
 import doom.http.Controller;
+import doom.middleware.MiddlewareProcessor;
 import doom.http.Response;
 import doom.http.Route;
 
@@ -9,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class AnnotationProcessor {
-    public void processMethod(Method method, Controller controller, Object obj){
+    public void processMethod(Method method, Controller controller, Object obj) {
         HttpMethod httpMethod = null;
         String reqPath = "";
 
@@ -40,8 +41,9 @@ public class AnnotationProcessor {
         }
 
         if (httpMethod != null) {
-            controller.addRoute(
-                    new Route(reqPath,
+            Route route =
+                    new Route(
+                            reqPath,
                             httpMethod.value(),
                             request -> {
                                 String msg;
@@ -56,7 +58,12 @@ public class AnnotationProcessor {
                                 }
 
                                 return Response.error(msg);
-                            }));
+                            });
+            controller.addRoute(route);
         }
+    }
+
+    public void processMiddleware(MiddlewareProcessor middlewareProcessor){
+
     }
 }

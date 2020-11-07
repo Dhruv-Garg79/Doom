@@ -1,10 +1,10 @@
 package doom;
 
-import doom.http.MiddleWareHandler;
+import doom.middleware.MiddlewareHandler;
 import doom.http.Request;
 import doom.http.Response;
 
-public class LogMiddleWare implements MiddleWareHandler {
+public class LogMiddleware implements MiddlewareHandler {
     @Override
     public Response handle(Request req) {
         System.out.println(req.toString());

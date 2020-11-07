@@ -1,4 +1,4 @@
-package doom.annotations;
+package doom.http.annotations;
 
 import doom.http.HttpMethods;
 
@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-@HttpMethod(HttpMethods.PATCH)
-public @interface PATCH {
+@HttpMethod(HttpMethods.GET)
+public @interface GET {
     String value();
 }

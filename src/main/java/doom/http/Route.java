@@ -1,17 +1,28 @@
 package doom.http;
 
-public class Route {
+import doom.middleware.MiddlewareAdder;
+import doom.middleware.MiddlewareHandler;
+import doom.middleware.MiddlewareProcessor;
+
+import java.io.IOException;
+
+public class Route implements MiddlewareAdder {
     private String path;
     private HttpMethods method;
     private RequestHandler handler;
+    MiddlewareProcessor middlewareProcessor;
 
     public Route(String path, HttpMethods method, RequestHandler handler) {
         this.path = path;
         this.method = method;
         this.handler = handler;
+        this.middlewareProcessor = new MiddlewareProcessor();
     }
 
-    public Response processRequest(Request request) {
+    public Response processRequest(Request request) throws IOException {
+        if (!middlewareProcessor.process(request.getExchange()))
+            return null;
+
         return handler.handle(request);
     }
 
@@ -37,5 +48,10 @@ public class Route {
 
     public void setHandler(RequestHandler handler) {
         this.handler = handler;
+    }
+
+    @Override
+    public void addMiddleware(MiddlewareHandler middleWareHandler) {
+        middlewareProcessor.addMiddleware(middleWareHandler);
     }
 }

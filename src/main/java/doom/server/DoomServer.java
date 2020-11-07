@@ -1,9 +1,9 @@
-package doom;
+package doom.server;
 
 import com.sun.net.httpserver.HttpServer;
-import doom.annotations.Path;
+import doom.http.annotations.Path;
 import doom.http.Controller;
-import doom.http.MiddleWareHandler;
+import doom.middleware.MiddlewareHandler;
 import doom.utils.AnnotationProcessor;
 import doom.utils.Utils;
 
@@ -35,7 +35,7 @@ public class DoomServer {
         }
     }
 
-    public void addGlobalMiddleWare(MiddleWareHandler middleWareHandler){
+    public void addGlobalMiddleWare(MiddlewareHandler middleWareHandler){
         handler.addMiddleware(middleWareHandler);
     }
 

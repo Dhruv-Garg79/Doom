@@ -1,4 +1,4 @@
-package doom.annotations;
+package doom.http.annotations;
 
 import doom.http.HttpMethods;
 
@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-@HttpMethod(HttpMethods.DELETE)
-public @interface DELETE {
+@HttpMethod(HttpMethods.POST)
+public @interface POST {
     String value();
 }

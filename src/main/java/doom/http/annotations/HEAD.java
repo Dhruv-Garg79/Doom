@@ -1,4 +1,4 @@
-package doom.annotations;
+package doom.http.annotations;
 
 import doom.http.HttpMethods;
 

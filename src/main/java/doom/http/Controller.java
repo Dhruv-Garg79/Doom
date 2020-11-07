@@ -1,26 +1,29 @@
 package doom.http;
 
 import com.sun.net.httpserver.HttpExchange;
-import doom.annotations.MiddleWare;
+import doom.middleware.MiddlewareAdder;
+import doom.middleware.MiddlewareHandler;
+import doom.middleware.MiddlewareProcessor;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class Controller {
+public class Controller implements MiddlewareAdder {
     String basePath;
     Map<String, Route> routes;
-    List<MiddleWare> middleWares;
+    MiddlewareProcessor middlewareProcessor;
 
     public Controller(String basePath) {
         this.basePath = basePath;
         this.routes = new HashMap<>();
-        this.middleWares = new ArrayList<>();
+        middlewareProcessor = new MiddlewareProcessor();
     }
 
     public void process(HttpExchange exchange) throws IOException {
+        if (!middlewareProcessor.process(exchange))
+            return;
+
         Response response;
         Request request = new Request(exchange);
         Route route = getMatchingRoute(request.getPath(), request.getMethod());
@@ -31,7 +34,8 @@ public class Controller {
             response = Response.notFound();
         }
 
-        response.send(exchange);
+        if (response != null)
+            response.send(exchange);
     }
 
     public Route getMatchingRoute(String path, HttpMethods method) {
@@ -40,6 +44,11 @@ public class Controller {
 
     public void addRoute(Route route) {
         routes.put(route.getMethod() + route.getPath(), route);
+    }
+
+    @Override
+    public void addMiddleware(MiddlewareHandler middlewareHandler){
+        middlewareProcessor.addMiddleware(middlewareHandler);
     }
 
     public String getBasePath() {
