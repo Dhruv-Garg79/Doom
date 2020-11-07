@@ -2,6 +2,8 @@ package doom.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarEntry;
@@ -51,5 +53,17 @@ public class Utils {
         }
 
         return classes;
+    }
+
+    public static  <T> Object getObjectForClass(Class<T> mClass){
+        Constructor<T> constructor = null;
+        try {
+            constructor = mClass.getDeclaredConstructor();
+            return constructor.newInstance();
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
