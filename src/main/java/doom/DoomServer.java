@@ -2,6 +2,8 @@ package doom;
 
 import com.sun.net.httpserver.HttpServer;
 import doom.annotations.*;
+import doom.http.Controller;
+import doom.http.MiddleWareHandler;
 import doom.http.Response;
 import doom.http.Route;
 import doom.utils.Utils;
@@ -31,27 +33,28 @@ public class DoomServer {
             httpServer.start();
             logger.info("started");
 
-        } catch (IOException
-                | NoSuchMethodException
-                | IllegalAccessException
-                | InvocationTargetException
-                | InstantiationException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void loadAllRoutes()
-            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException,
-                    InstantiationException {
+    public void addGlobalMiddleWare(MiddleWareHandler middleWareHandler){
+        handler.addMiddleware(middleWareHandler);
+    }
+
+    private void loadAllRoutes() {
         String packageName = DoomServer.class.getPackageName();
         List<Class<?>> classes = Utils.getClassesInPackage(packageName);
 
         for (Class<?> mClass : classes) {
             Path path = mClass.getAnnotation(Path.class);
             if (path != null) {
-                Constructor constructor = mClass.getDeclaredConstructor();
-                Object obj = constructor.newInstance();
+                Controller controller = new Controller(path.value());
+                Object obj = getObjectForClass(mClass);
                 Method[] methods = mClass.getMethods();
+
+                assert obj != null : "Failed creating object of type " + mClass.getName();
+
                 for (Method method : methods) {
                     HttpMethod httpMethod = null;
                     String reqPath = "";
@@ -83,7 +86,7 @@ public class DoomServer {
                     }
 
                     if (httpMethod != null) {
-                        handler.addRoute(
+                        controller.addRoute(
                                 new Route(
                                         path.value() + reqPath,
                                         httpMethod.value(),
@@ -103,7 +106,21 @@ public class DoomServer {
                                         }));
                     }
                 }
+
+                handler.addController(controller);
             }
         }
+    }
+
+    public <T> Object getObjectForClass(Class<T> mClass){
+        Constructor<T> constructor = null;
+        try {
+            constructor = mClass.getDeclaredConstructor();
+            return constructor.newInstance();
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

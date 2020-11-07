@@ -47,4 +47,12 @@ public class Response {
     public void sendJSON(JSONObject jsonObject) {}
 
     public void sendBytes(byte[] data) {}
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
 }

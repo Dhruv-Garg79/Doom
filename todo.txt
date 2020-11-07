@@ -1,0 +1,41 @@
+Maybe Ideas:
+1. Give get, post, .... methods option directly on DoomServer Object
+
+    e.g.
+    server.get("/user", (req) -> {
+        processing...
+        return Response();
+    });
+
+2. improve annotation processing
+3. new project with basic scaffolding using gradle plugin/cli command like maven extension artifact commands.
+
+Checklist:
+1. handle path parameters in url. e.g.: api/example/resource/john
+2. handle query parameters in url. e.g. api/example?user=john
+3. handle form data
+4. handle all types of content. i.e. text, json, file and etc...
+
+5. middleware/interceptors - think about design and all/ no idea yet
+    choose b/w two:
+
+    - Middleware defined separately acc to path
+        - This approach will have A interface with single method(SAM) which middleware implement
+        - and a @MiddleWare for path regex
+
+    - Middleware defined separately and then added to route as class scoped or method scoped (going with this approach)
+        - This approach will have A interface with single method(SAM) which middleware implement
+        - and a @MiddleWare which will be applied to class or route method and takes list of middlewares in order.
+        - also give option for global middleware with server object
+
+6. handle multithreading properly and other resources
+7. code refactoring and documentation
+
+Points:
+
+1. POST request will have path param but no query param. It will also have body.
+2. GET req can't have body.
+
+*Note:
+GET is idempotent(meaning multiple requests won't change the state of the server) but POST, PUT, DELETE are not because they do change state.
+If the operation has side effects, then it is certainly not 'safer' to use the GET method because the browser assumes all GETs are idempotent. search engines also convert that in a nightmare, as Google will safely "click" all links with GET request, but will omit everything else. It's not so safe leaving a service that an innocent crawler can accidentally wipe the database.

@@ -16,7 +16,7 @@ class UsingSocketDirectlyServer implements Runnable {
     static final boolean verbose = true;
 
     // Client Connection via Socket Class
-    private Socket connect;
+    private final Socket connect;
 
     public UsingSocketDirectlyServer(Socket c) {
         connect = c;

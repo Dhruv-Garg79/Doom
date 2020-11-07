@@ -11,9 +11,8 @@ public class Utils {
     public static final List<Class<?>> getClassesInPackage(String packageName) {
         String path = packageName.replaceAll("\\.", File.separator);
         List<Class<?>> classes = new ArrayList<>();
-        String[] classPathEntries = System.getProperty("java.class.path").split(
-                System.getProperty("path.separator")
-        );
+        String[] classPathEntries =
+                System.getProperty("java.class.path").split(System.getProperty("path.separator"));
 
         String name;
         for (String classpathEntry : classPathEntries) {
@@ -53,5 +52,4 @@ public class Utils {
 
         return classes;
     }
-
 }
