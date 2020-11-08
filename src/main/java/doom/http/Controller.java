@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Controller implements MiddlewareAdder {
-    String basePath;
+    private final String basePath;
     Map<String, Route> routes;
     MiddlewareProcessor middlewareProcessor;
 
@@ -20,22 +20,23 @@ public class Controller implements MiddlewareAdder {
         middlewareProcessor = new MiddlewareProcessor();
     }
 
-    public void process(HttpExchange exchange) throws IOException {
+    public void process(HttpExchange exchange, String routePath) throws IOException {
         if (!middlewareProcessor.process(exchange))
             return;
 
-        Response response;
+        Response response = null;
         Request request = new Request(exchange);
-        Route route = getMatchingRoute(request.getPath(), request.getMethod());
+        Route route = getMatchingRoute(routePath, request.getMethod());
 
         if (route != null) {
             response = route.processRequest(request);
-        } else {
+        }
+
+        if (response == null){
             response = Response.notFound();
         }
 
-        if (response != null)
-            response.send(exchange);
+        response.send(exchange);
     }
 
     public Route getMatchingRoute(String path, HttpMethods method) {

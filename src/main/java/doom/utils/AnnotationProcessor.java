@@ -50,7 +50,6 @@ public class AnnotationProcessor {
                             request -> {
                                 String msg;
                                 try {
-                                    System.out.println("In method");
                                     return (Response) method.invoke(obj, request);
                                 } catch (IllegalAccessException e) {
                                     msg = e.getLocalizedMessage();

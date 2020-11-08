@@ -30,6 +30,7 @@ Checklist:
 
 6. handle multithreading properly and other resources
 7. code refactoring and documentation
+8. handle parsing path in controller. if path is api/example/response and controller is api/example then we must check for substring
 
 Points:
 

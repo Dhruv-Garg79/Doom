@@ -2,21 +2,23 @@ package doom.server;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import doom.http.*;
+import doom.http.Controller;
+import doom.http.Response;
 import doom.middleware.MiddlewareAdder;
 import doom.middleware.MiddlewareHandler;
 import doom.middleware.MiddlewareProcessor;
+import doom.utils.Tuple;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 class DoomHttpHandler implements HttpHandler, MiddlewareAdder {
-    Map<String, Controller> controllers;
+    List<Controller> controllers;
     MiddlewareProcessor globalMiddlewareProcessor;
 
     DoomHttpHandler() {
-        this.controllers = new HashMap<>();
+        this.controllers = new ArrayList<>();
         globalMiddlewareProcessor = new MiddlewareProcessor();
     }
 
@@ -25,12 +27,48 @@ class DoomHttpHandler implements HttpHandler, MiddlewareAdder {
         if (!globalMiddlewareProcessor.process(exchange))
             return;
 
-        Controller controller = getMatchingController(exchange.getRequestURI().getPath());
-        controller.process(exchange);
+        System.out.println(exchange.getRequestURI().getPath());
+        Tuple<Controller, String> tuple = getMatchingController(exchange.getRequestURI().getPath());
+        Controller controller = tuple.first;
+        String path = tuple.second;
+
+        if (controller != null) {
+            controller.process(exchange, path);
+        } else {
+            Response.notFound().send(exchange);
+        }
     }
 
-    public Controller getMatchingController(String path) {
-        return controllers.get(path);
+    public Tuple<Controller, String> getMatchingController(String path) {
+        Controller controller = null;
+        int mostAccuratePath = 0;
+
+        System.out.println(controllers.size());
+        for (Controller ctrl : controllers){
+            int i = longestSubstring(path, ctrl.getBasePath());
+            if (i > 0 && i > mostAccuratePath && (i == path.length() || path.charAt(i) == '/')){
+                mostAccuratePath = i;
+                controller = ctrl;
+            }
+        }
+
+        if (controller == null)
+            return null;
+
+        return new Tuple<>(controller, path.substring(mostAccuratePath));
+    }
+
+    public int longestSubstring(String x, String y){
+        int i = 0;
+        while (i < x.length() && i < y.length()){
+            if (x.charAt(i) == y.charAt(i))
+                i++;
+            else
+                break;
+        }
+
+        System.out.println(x + " " + y + " " + x.charAt(i));
+        return i;
     }
 
     @Override
@@ -39,6 +77,6 @@ class DoomHttpHandler implements HttpHandler, MiddlewareAdder {
     }
 
     public void addController(Controller controller) {
-        controllers.put(controller.getBasePath(), controller);
+        controllers.add(controller);
     }
 }

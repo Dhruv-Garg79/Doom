@@ -1,6 +1,7 @@
 package doom.server;
 
 import com.sun.net.httpserver.HttpServer;
+import doom.ExampleResource;
 import doom.http.annotations.Path;
 import doom.http.Controller;
 import doom.middleware.MiddleWare;
@@ -42,7 +43,8 @@ public class DoomServer {
 
     private void loadAllRoutes() {
         AnnotationProcessor annotationProcessor = new AnnotationProcessor();
-        String packageName = DoomServer.class.getPackageName();
+        //TODO: handle package name i.e. which package name should we use and nested package problem
+        String packageName = ExampleResource.class.getPackageName();
         List<Class<?>> classes = Utils.getClassesInPackage(packageName);
 
         for (Class<?> mClass : classes) {

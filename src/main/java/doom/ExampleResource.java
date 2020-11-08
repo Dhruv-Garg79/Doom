@@ -17,4 +17,11 @@ public class ExampleResource {
         System.out.println("Holla senorita " + request.getPath());
         return new Response("Hello world!");
     }
+
+    @GET("/resource?id={id}")
+    @MiddleWare({LogMiddleware.class})
+    public Response getNamesWithQuery(Request request, @QueryParam("id") String id) {
+        System.out.println("Holla senorita " + request.getPath() + " " + id);
+        return new Response("Hello world!");
+    }
 }
