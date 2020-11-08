@@ -13,6 +13,11 @@ Maybe Ideas:
 Checklist:
 1. handle path parameters in url. e.g.: api/example/resource/john
 2. handle query parameters in url. e.g. api/example?user=john
+    choose b/w options:
+
+    - Query parameters in function paramters e.g. getName(Request req, @QueryParam("id") id);
+    - Query parameters in Request object e.g. id = req.getQueryParam("id");
+
 3. handle form data
 4. handle all types of content. i.e. text, json, file and etc...
 
