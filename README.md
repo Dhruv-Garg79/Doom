@@ -5,7 +5,7 @@
 </p>
 
 # Doom
-A simple java web framework which should not be used (Hence the name). It's a web framework which I have created solely for learning purposes.
+A simple java web framework which should not be used in production (Hence the name). It's a web framework which I have created solely for learning purposes.
 
 ## Getting Started
 ```
