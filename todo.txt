@@ -9,6 +9,7 @@ Maybe Ideas:
 
 2. improve annotation processing
 3. new project with basic scaffolding using gradle plugin/cli command like maven extension artifact commands.
+4. https://medium.com/faun/continuous-integration-of-java-project-with-github-actions-7a8a0e8246ef
 
 Checklist:
 1. handle path parameters in url. e.g.: api/example/resource/john
@@ -17,6 +18,7 @@ Checklist:
 
     - Query parameters in function paramters e.g. getName(Request req, @QueryParam("id") id);
     - Query parameters in Request object e.g. id = req.getQueryParam("id");
+    - point: first method is better because we will get compiler check on parameters, but when calling .getQueryParam there can be typo chances.
 
 3. handle form data
 4. handle all types of content. i.e. text, json, file and etc...
