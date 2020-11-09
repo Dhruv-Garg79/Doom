@@ -25,7 +25,7 @@ public class Controller implements MiddlewareAdder {
             return;
 
         Response response = null;
-        Request request = new Request(exchange);
+        Request request = new Request(exchange, routePath);
         Route route = getMatchingRoute(routePath, request.getMethod());
 
         if (route != null) {

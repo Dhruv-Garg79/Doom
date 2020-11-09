@@ -17,8 +17,10 @@ Checklist:
     choose b/w options:
 
     - Query parameters in function paramters e.g. getName(Request req, @QueryParam("id") id);
+        -this method is better because we will get compiler check on parameters, but when calling .getQueryParam there can be typo chances.
+        -the difficulty is this how to pass variable no of parameters to function.
     - Query parameters in Request object e.g. id = req.getQueryParam("id");
-    - point: first method is better because we will get compiler check on parameters, but when calling .getQueryParam there can be typo chances.
+        -this method is much easier to implement
 
 3. handle form data
 4. handle all types of content. i.e. text, json, file and etc...

@@ -33,7 +33,7 @@ class DoomHttpHandler implements HttpHandler, MiddlewareAdder {
         String path = tuple.second;
 
         if (controller != null) {
-            controller.process(exchange, path);
+            controller.process(exchange, !path.equals("") ? path : "/");
         } else {
             Response.notFound().send(exchange);
         }
