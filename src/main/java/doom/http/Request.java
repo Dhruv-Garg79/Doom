@@ -11,21 +11,13 @@ public class Request {
     private HttpExchange exchange;
 
     private Map<String, String> queryParams;
-
-    public Request(HttpExchange exchange){
-        initialize(exchange, exchange.getRequestURI().getPath());
-    }
-    public Request(HttpExchange exchange, String path) {
-        initialize(exchange, path);
-    }
-
-    public void initialize(HttpExchange exchange, String path) {
+    public Request(HttpExchange exchange) {
         this.exchange = exchange;
 
-        this.path = path;
+        this.path = exchange.getRequestURI().getPath();
         method = HttpMethods.valueOf(exchange.getRequestMethod());
 
-        queryParams = parsePathForQueries(path);
+        queryParams = parseQuery(exchange.getRequestURI().getQuery(), false);
     }
 
     public String getPath() {
@@ -52,16 +44,18 @@ public class Request {
         return queryParams.get(key);
     }
 
-    public Map<String, String> parsePathForQueries(String path){
+    public Map<String, String> parseQuery(String path, boolean isRawPath){
         Map<String, String> map = new HashMap<>();
+
         int n = path.length();
         int i = 0;
-        while (i < n && path.charAt(i) != '?')
-            i++;
 
-        i++;
-        if (i >= n - 2)
-            return map;
+        if (isRawPath) {
+            while (i < n && path.charAt(i) != '?') i++;
+
+            i++;
+            if (i >= n - 2) return map;
+        }
 
         StringBuilder key = new StringBuilder();
         StringBuilder val = new StringBuilder();

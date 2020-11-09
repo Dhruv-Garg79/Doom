@@ -49,3 +49,10 @@ Points:
 *Note:
 GET is idempotent(meaning multiple requests won't change the state of the server) but POST, PUT, DELETE are not because they do change state.
 If the operation has side effects, then it is certainly not 'safer' to use the GET method because the browser assumes all GETs are idempotent. search engines also convert that in a nightmare, as Google will safely "click" all links with GET request, but will omit everything else. It's not so safe leaving a service that an innocent crawler can accidentally wipe the database.
+
+for versioning :-
+a.b.c
+
+a - major, when product is considered complete with decided features
+b - increment for each feature completed
+c - increment for bug fixes or small improvements

@@ -16,7 +16,8 @@ public class RequestParseQueryTest {
     @Test
     public void parsePathForQueries() {
         Mockito.when(exchange.getRequestMethod()).thenReturn("GET");
-        Request request = new Request(exchange, "api/name?id=231&name=john&lastname=doe");
+        Mockito.when(exchange.getRequestURI().getPath()).thenReturn("api/resource?id=231&name=john&lastname=doe");
+        Request request = new Request(exchange);
 
         assertAll(
                 () -> assertEquals(request.getQuery("id"), "231"),

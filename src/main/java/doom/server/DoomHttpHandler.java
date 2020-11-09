@@ -27,7 +27,6 @@ class DoomHttpHandler implements HttpHandler, MiddlewareAdder {
         if (!globalMiddlewareProcessor.process(exchange))
             return;
 
-        System.out.println(exchange.getRequestURI().getPath());
         Tuple<Controller, String> tuple = getMatchingController(exchange.getRequestURI().getPath());
         Controller controller = tuple.first;
         String path = tuple.second;
