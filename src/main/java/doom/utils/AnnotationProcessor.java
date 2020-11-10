@@ -1,5 +1,6 @@
 package doom.utils;
 
+import doom.ExampleResource;
 import doom.http.Controller;
 import doom.http.Response;
 import doom.http.Route;
@@ -7,11 +8,44 @@ import doom.http.annotations.*;
 import doom.middleware.MiddleWare;
 import doom.middleware.MiddlewareAdder;
 import doom.middleware.MiddlewareHandler;
+import doom.server.DoomHttpHandler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 public class AnnotationProcessor {
+    public static void startProcessing(DoomHttpHandler handler){
+        AnnotationProcessor annotationProcessor = new AnnotationProcessor();
+        annotationProcessor.loadAllRoutes(annotationProcessor, handler);
+    }
+
+    private void loadAllRoutes(AnnotationProcessor annotationProcessor, DoomHttpHandler handler) {
+        //TODO: handle package name i.e. which package name should we use and nested package problem
+        String packageName = ExampleResource.class.getPackageName();
+        List<Class<?>> classes = Utils.getClassesInPackage(packageName);
+
+        for (Class<?> mClass : classes) {
+            Path path = mClass.getAnnotation(Path.class);
+            if (path != null) {
+                Controller controller = new Controller(path.value());
+                Object obj = Utils.getObjectForClass(mClass);
+                Method[] methods = mClass.getMethods();
+
+                assert obj != null : "Failed creating object of type " + mClass.getName();
+
+                for (Method method : methods) {
+                    annotationProcessor.processMethod(method, controller, obj);
+                }
+
+                if (mClass.isAnnotationPresent(MiddleWare.class))
+                    annotationProcessor.processMiddleware(mClass.getAnnotation(MiddleWare.class), controller);
+
+                handler.addController(controller);
+            }
+        }
+    }
+
     public void processMethod(Method method, Controller controller, Object obj) {
         HttpMethod httpMethod = null;
         String reqPath = "";
@@ -21,25 +55,25 @@ public class AnnotationProcessor {
             httpMethod = GET.class.getAnnotation(HttpMethod.class);
             reqPath = get.value();
         } else if (method.isAnnotationPresent(POST.class)) {
-            POST get = method.getAnnotation(POST.class);
+            POST post = method.getAnnotation(POST.class);
             httpMethod = POST.class.getAnnotation(HttpMethod.class);
-            reqPath = get.value();
+            reqPath = post.value();
         } else if (method.isAnnotationPresent(PUT.class)) {
-            PUT get = method.getAnnotation(PUT.class);
+            PUT put = method.getAnnotation(PUT.class);
             httpMethod = PUT.class.getAnnotation(HttpMethod.class);
-            reqPath = get.value();
+            reqPath = put.value();
         } else if (method.isAnnotationPresent(PATCH.class)) {
-            PATCH get = method.getAnnotation(PATCH.class);
+            PATCH patch = method.getAnnotation(PATCH.class);
             httpMethod = PATCH.class.getAnnotation(HttpMethod.class);
-            reqPath = get.value();
+            reqPath = patch.value();
         } else if (method.isAnnotationPresent(HEAD.class)) {
-            HEAD get = method.getAnnotation(HEAD.class);
+            HEAD head = method.getAnnotation(HEAD.class);
             httpMethod = HEAD.class.getAnnotation(HttpMethod.class);
-            reqPath = get.value();
+            reqPath = head.value();
         } else if (method.isAnnotationPresent(DELETE.class)) {
-            DELETE get = method.getAnnotation(DELETE.class);
+            DELETE delete = method.getAnnotation(DELETE.class);
             httpMethod = DELETE.class.getAnnotation(HttpMethod.class);
-            reqPath = get.value();
+            reqPath = delete.value();
         }
 
         if (httpMethod != null) {

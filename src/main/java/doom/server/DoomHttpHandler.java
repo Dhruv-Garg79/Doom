@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-class DoomHttpHandler implements HttpHandler, MiddlewareAdder {
+public class DoomHttpHandler implements HttpHandler, MiddlewareAdder {
     List<Controller> controllers;
     MiddlewareProcessor globalMiddlewareProcessor;
 

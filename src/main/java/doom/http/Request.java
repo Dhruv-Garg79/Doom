@@ -8,16 +8,18 @@ import java.util.Map;
 public class Request {
     private String path;
     private HttpMethods method;
-    private HttpExchange exchange;
+    private final HttpExchange exchange;
 
-    private Map<String, String> queryParams;
+    private final Map<String, String> queryParams;
+    private Map<String, String> pathParams;
+
     public Request(HttpExchange exchange) {
         this.exchange = exchange;
 
         this.path = exchange.getRequestURI().getPath();
         method = HttpMethods.valueOf(exchange.getRequestMethod());
 
-        queryParams = parseQuery(exchange.getRequestURI().getQuery(), false);
+        queryParams = parseQueryParams(exchange.getRequestURI().getQuery(), false);
     }
 
     public String getPath() {
@@ -40,11 +42,17 @@ public class Request {
         return exchange;
     }
 
-    public String getQuery(String key){
+    public String getQueryParam(String key){
         return queryParams.get(key);
     }
 
-    public Map<String, String> parseQuery(String path, boolean isRawPath){
+    public Map<String, String> parsePathParams(String path){
+        Map<String, String> map = new HashMap<>();
+
+        return map;
+    }
+
+    public Map<String, String> parseQueryParams(String path, boolean isRawPath){
         Map<String, String> map = new HashMap<>();
 
         int n = path.length();
@@ -74,8 +82,8 @@ public class Request {
             i++;
 
             map.put(key.toString(), val.toString());
-            key = new StringBuilder();
-            val = new StringBuilder();
+            key.setLength(0);
+            val.setLength(0);
         }
 
         return map;

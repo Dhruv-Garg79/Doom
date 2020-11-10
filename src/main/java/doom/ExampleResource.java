@@ -20,7 +20,13 @@ public class ExampleResource {
 
     @GET("/resource")
     public Response getNamesWithQuery(Request request) {
-        System.out.println("Holla senorita " + request.getQuery("id"));
+        System.out.println("Holla senorita " + request.getQueryParam("id"));
+        return new Response("Hello world!");
+    }
+
+    @GET("/resource/{name}")
+    public Response getNamesWithPathParam(Request request) {
+        System.out.println("Holla senorita " + request.getQueryParam("id"));
         return new Response("Hello world!");
     }
 }

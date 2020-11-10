@@ -20,9 +20,9 @@ public class RequestParseQueryTest {
         Request request = new Request(exchange);
 
         assertAll(
-                () -> assertEquals(request.getQuery("id"), "231"),
-                () -> assertEquals(request.getQuery("name"), "john"),
-                () -> assertEquals(request.getQuery("lastname"), "doe"),
-                () -> assertNull(request.getQuery("email")));
+                () -> assertEquals(request.getQueryParam("id"), "231"),
+                () -> assertEquals(request.getQueryParam("name"), "john"),
+                () -> assertEquals(request.getQueryParam("lastname"), "doe"),
+                () -> assertNull(request.getQueryParam("email")));
     }
 }
