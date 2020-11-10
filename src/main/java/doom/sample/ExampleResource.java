@@ -1,6 +1,5 @@
 package doom.sample;
 
-import doom.LogMiddleware;
 import doom.http.Request;
 import doom.http.Response;
 import doom.http.annotations.GET;
@@ -11,6 +10,8 @@ import doom.middleware.MiddleWare;
 @MiddleWare({LogMiddleware.class})
 @Path("/api/example")
 public class ExampleResource {
+
+    public ExampleResource(){}
 
     @POST("/resource")
     @MiddleWare({LogMiddleware.class})
@@ -27,7 +28,7 @@ public class ExampleResource {
 
     @GET("/resource/{name}")
     public Response getNamesWithPathParam(Request request) {
-        System.out.println("Holla senorita " + request.getQueryParam("id"));
+        System.out.println("Holla senorita " + request.getQueryParam("name"));
         return new Response("Hello world!");
     }
 }

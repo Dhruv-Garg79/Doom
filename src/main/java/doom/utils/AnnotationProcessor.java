@@ -1,6 +1,5 @@
 package doom.utils;
 
-import doom.ExampleResource;
 import doom.http.Controller;
 import doom.http.Response;
 import doom.http.Route;
@@ -8,6 +7,7 @@ import doom.http.annotations.*;
 import doom.middleware.MiddleWare;
 import doom.middleware.MiddlewareAdder;
 import doom.middleware.MiddlewareHandler;
+import doom.sample.ExampleResource;
 import doom.server.DoomHttpHandler;
 
 import java.lang.reflect.InvocationTargetException;
