@@ -1,8 +1,8 @@
-package doom;
+package doom.sample;
 
 import doom.server.DoomServer;
 
-class rough {
+class Application {
     public static void main(String[] args) {
         DoomServer server = new DoomServer();
         server.addGlobalMiddleWare(new LogMiddleware());

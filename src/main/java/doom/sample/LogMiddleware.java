@@ -1,4 +1,4 @@
-package doom;
+package doom.sample;
 
 import doom.middleware.MiddlewareHandler;
 import doom.http.Request;

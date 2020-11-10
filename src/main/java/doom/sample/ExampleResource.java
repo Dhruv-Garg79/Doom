@@ -1,5 +1,6 @@
-package doom;
+package doom.sample;
 
+import doom.LogMiddleware;
 import doom.http.Request;
 import doom.http.Response;
 import doom.http.annotations.GET;

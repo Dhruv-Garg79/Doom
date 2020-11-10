@@ -13,6 +13,9 @@ Maybe Ideas:
 
 Checklist:
 1. handle path parameters in url. e.g.: api/example/resource/{john} - tomorrows priority
+    - just got a brilliant idea, instead of coming up with a separate regex pattern which will be useless in this case.
+      I just have to convert the route into a regex itself.
+
 2. handle query parameters in url. e.g. api/example?user=john
     choose b/w options:
 

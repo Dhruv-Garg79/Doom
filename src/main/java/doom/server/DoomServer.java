@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class DoomServer {
     private final DoomHttpHandler handler = new DoomHttpHandler();
 
-    DoomServer(){
+    public DoomServer(){
         AnnotationProcessor.startProcessing(handler);
     }
 
