@@ -4,6 +4,8 @@
   </a>
 </p>
 
+![Java CI with Gradle](https://github.com/Dhruv-Garg79/Doom/workflows/Java%20CI%20with%20Gradle/badge.svg?branch=main)
+
 # Doom
 A simple java web framework which should not be used in production (Hence the name). It's a web framework which I have created solely for learning purposes.
 
