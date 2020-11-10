@@ -46,14 +46,15 @@ public class Request {
         return queryParams.get(key);
     }
 
-    public Map<String, String> parsePathParams(String path){
-        Map<String, String> map = new HashMap<>();
-
-        return map;
+    public String getPathParam(String key){
+        return pathParams.get(key);
     }
 
     public Map<String, String> parseQueryParams(String path, boolean isRawPath){
         Map<String, String> map = new HashMap<>();
+
+        if (path == null || path.isBlank())
+            return map;
 
         int n = path.length();
         int i = 0;
@@ -87,5 +88,9 @@ public class Request {
         }
 
         return map;
+    }
+
+    public void setPathParams(Map<String, String> pathParams) {
+        this.pathParams = pathParams;
     }
 }

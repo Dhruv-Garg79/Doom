@@ -42,7 +42,6 @@ public class DoomHttpHandler implements HttpHandler, MiddlewareAdder {
         Controller controller = null;
         int mostAccuratePath = 0;
 
-        System.out.println(controllers.size());
         for (Controller ctrl : controllers){
             int i = longestSubstring(path, ctrl.getBasePath());
             if (i > 0 && i > mostAccuratePath && (i == path.length() || path.charAt(i) == '/')){
@@ -66,7 +65,6 @@ public class DoomHttpHandler implements HttpHandler, MiddlewareAdder {
                 break;
         }
 
-        System.out.println(x + " " + y + " " + x.charAt(i));
         return i;
     }
 

@@ -4,19 +4,22 @@ import com.sun.net.httpserver.HttpExchange;
 import doom.middleware.MiddlewareAdder;
 import doom.middleware.MiddlewareHandler;
 import doom.middleware.MiddlewareProcessor;
+import doom.utils.PathUtils;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 public class Controller implements MiddlewareAdder {
     private final String basePath;
-    Map<String, Route> routes;
+    List<Route> routes;
     MiddlewareProcessor middlewareProcessor;
 
     public Controller(String basePath) {
         this.basePath = basePath;
-        this.routes = new HashMap<>();
+        this.routes = new ArrayList<>();
         middlewareProcessor = new MiddlewareProcessor();
     }
 
@@ -26,7 +29,7 @@ public class Controller implements MiddlewareAdder {
 
         Response response = null;
         Request request = new Request(exchange);
-        Route route = getMatchingRoute(routePath, request.getMethod());
+        Route route = getMatchingRoute(routePath, request);
 
         if (route != null) {
             response = route.processRequest(request);
@@ -39,12 +42,27 @@ public class Controller implements MiddlewareAdder {
         response.send(exchange);
     }
 
-    public Route getMatchingRoute(String path, HttpMethods method) {
-        return routes.get(method.toString() + path);
+    public Route getMatchingRoute(String path, Request request) {
+        Route res = null;
+        Matcher matcher;
+
+        for (Route route : routes){
+            matcher = route.matchPath(path);
+            if (route.getMethod().equals(request.getMethod()) && matcher.matches()){
+                Map<String, String> pathParams = PathUtils.extractPathParams(matcher, route.getPath());
+                System.out.println(pathParams);
+                request.setPathParams(pathParams);
+
+                res = route;
+                break;
+            }
+        }
+
+        return res;
     }
 
     public void addRoute(Route route) {
-        routes.put(route.getMethod() + route.getPath(), route);
+        routes.add(route);
     }
 
     @Override

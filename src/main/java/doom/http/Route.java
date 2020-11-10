@@ -3,10 +3,14 @@ package doom.http;
 import doom.middleware.MiddlewareAdder;
 import doom.middleware.MiddlewareHandler;
 import doom.middleware.MiddlewareProcessor;
+import doom.utils.PathUtils;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Route implements MiddlewareAdder {
+    private Pattern pathPattern;
     private String path;
     private HttpMethods method;
     private RequestHandler handler;
@@ -17,6 +21,8 @@ public class Route implements MiddlewareAdder {
         this.method = method;
         this.handler = handler;
         this.middlewareProcessor = new MiddlewareProcessor();
+
+        this.pathPattern = PathUtils.pathToRegex(path);
     }
 
     public Response processRequest(Request request) throws IOException {
@@ -24,6 +30,11 @@ public class Route implements MiddlewareAdder {
             return null;
 
         return handler.handle(request);
+    }
+
+    public Matcher matchPath(String path){
+        Matcher matcher = pathPattern.matcher(path);
+        return matcher;
     }
 
     public String getPath() {

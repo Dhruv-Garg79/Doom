@@ -16,19 +16,26 @@ public class ExampleResource {
     @POST("/resource")
     @MiddleWare({LogMiddleware.class})
     public Response getNames(Request request) {
-        System.out.println("Holla senorita " + request.getPath());
+        System.out.println("Hola senorita... " + request.getPath());
         return new Response("Hello world!");
     }
 
     @GET("/resource")
     public Response getNamesWithQuery(Request request) {
-        System.out.println("Holla senorita " + request.getQueryParam("id"));
+        System.out.println("Hola senorita... " + request.getQueryParam("id"));
         return new Response("Hello world!");
     }
 
     @GET("/resource/{name}")
     public Response getNamesWithPathParam(Request request) {
-        System.out.println("Holla senorita " + request.getQueryParam("name"));
+        System.out.println("Hola senorita... " + request.getPathParam("name"));
+        return new Response("Hello world!");
+    }
+
+    @GET("/resource/{name}/family/{members}")
+    public Response getNamesWithPathParam2(Request request) {
+        System.out.println("Hola senorita... " + request.getPathParam("name"));
+        System.out.println(request.getPathParam("members") + ' ' + request.getQueryParam("id"));
         return new Response("Hello world!");
     }
 }
