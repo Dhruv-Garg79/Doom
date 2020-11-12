@@ -8,8 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 
 public class Response {
-    Object data;
-    int statusCode = 200;
+    private final Object data;
+    private int statusCode = 200;
 
     public Response(String message) {
         this.data = message;
@@ -43,11 +43,11 @@ public class Response {
         else System.out.println("Not Allowed object of type " + this.data.getClass().getName());
     }
 
-    public void sendString(String str, HttpExchange exchange) throws IOException {
+    private void sendString(String str, HttpExchange exchange) throws IOException {
         sendBytes(str.getBytes(), exchange);
     }
 
-    public void sendFile(File file, HttpExchange exchange) {
+    private void sendFile(File file, HttpExchange exchange) {
         int count = 0;
         byte[] buffer = new byte[4096];
 
@@ -68,11 +68,11 @@ public class Response {
 
     }
 
-    public void sendJSON(JSONObject jsonObject, HttpExchange exchange) throws IOException {
+    private void sendJSON(JSONObject jsonObject, HttpExchange exchange) throws IOException {
         sendBytes(jsonObject.toString().getBytes(), exchange);
     }
 
-    public void sendBytes(byte[] data, HttpExchange exchange) throws IOException {
+    private void sendBytes(byte[] data, HttpExchange exchange) throws IOException {
         OutputStream outputStream = exchange.getResponseBody();
 
         exchange.sendResponseHeaders(statusCode, data.length);
