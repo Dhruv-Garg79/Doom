@@ -9,7 +9,10 @@ Maybe Ideas:
 
 2. improve annotation processing
 3. new project with basic scaffolding using gradle plugin/cli command like maven extension artifact commands.
-4. https://medium.com/faun/continuous-integration-of-java-project-with-github-actions-7a8a0e8246ef
+
+useful links:
+https://medium.com/faun/continuous-integration-of-java-project-with-github-actions-7a8a0e8246ef
+https://dzone.com/articles/fileinputstream-fileoutputstream-considered-harmful
 
 Checklist:
 

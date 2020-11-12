@@ -32,6 +32,10 @@ public class Utils {
                                 classes.add(Class.forName(classPath));
                             }
                         }
+                        if (entry.isDirectory()){
+                            System.out.println(entry.getName());
+//                            classes.addAll(getClassesInPackage(file.getName()));
+                        }
                     }
                 } catch (Exception ex) {
                     // Silence is gold
@@ -44,6 +48,10 @@ public class Utils {
                         if (name.endsWith(".class")) {
                             name = name.substring(0, name.length() - 6);
                             classes.add(Class.forName(packageName + "." + name));
+                        }
+                        if (file.isDirectory()){
+                            System.out.println(file.getAbsolutePath());
+//                            classes.addAll(getClassesInPackage(file.getName()));
                         }
                     }
                 } catch (Exception ex) {

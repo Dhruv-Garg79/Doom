@@ -6,6 +6,9 @@ import doom.http.annotations.GET;
 import doom.http.annotations.POST;
 import doom.http.annotations.Path;
 import doom.middleware.MiddleWare;
+import org.json.JSONObject;
+
+import java.io.File;
 
 @MiddleWare({LogMiddleware.class})
 @Path("/api/example")
@@ -26,10 +29,19 @@ public class ExampleResource {
         return new Response("Hello world!");
     }
 
-    @GET("/resource/{name}")
+    @GET("/resource/{name}/{id}")
     public Response getNamesWithPathParam(Request request) {
         System.out.println("Hola senorita... " + request.getPathParam("name"));
-        return new Response("Hello world!");
+        JSONObject json = new JSONObject();
+        json.put("name", request.getPathParam("name"));
+        json.put("id", request.getPathParam("id"));
+        return new Response(json);
+    }
+
+    @GET("/resource/file")
+    public Response file(Request request) {
+        File file = new File("/home/dhruv/IdeaProjects/Framework/java-doom/src/main/java/doom/sample/Application.java");
+        return new Response(file);
     }
 
     @GET("/resource/{name}/family/{members}")

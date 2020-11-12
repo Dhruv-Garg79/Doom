@@ -3,20 +3,29 @@ package doom.http;
 import com.sun.net.httpserver.HttpExchange;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 
 public class Response {
-    String msg;
+    Object data;
     int statusCode = 200;
 
     public Response(String message) {
-        this.msg = message;
+        this.data = message;
     }
 
     public Response(String message, int statusCode) {
-        this.msg = message;
+        this.data = message;
         this.statusCode = statusCode;
+    }
+
+    public Response(JSONObject jsonObject) {
+        this.data = jsonObject;
+    }
+
+    public Response(File file) {
+        this.data = file;
     }
 
     public static Response error(String msg) {
@@ -28,23 +37,49 @@ public class Response {
     }
 
     public void send(HttpExchange exchange) throws IOException {
-        OutputStream outputStream = exchange.getResponseBody();
+        if (this.data instanceof String) sendString((String) data, exchange);
+        else if (this.data instanceof JSONObject) sendJSON((JSONObject) data, exchange);
+        else if (this.data instanceof File) sendFile((File) data, exchange);
+        else System.out.println("Not Allowed object of type " + this.data.getClass().getName());
+    }
 
-        byte[] data = msg.getBytes();
+    public void sendString(String str, HttpExchange exchange) throws IOException {
+        sendBytes(str.getBytes(), exchange);
+    }
+
+    public void sendFile(File file, HttpExchange exchange) {
+        int count = 0;
+        byte[] buffer = new byte[4096];
+
+        try {
+            OutputStream outputStream = exchange.getResponseBody();
+            InputStream inputStream = Files.newInputStream(file.toPath(), StandardOpenOption.READ);
+
+            exchange.sendResponseHeaders(statusCode, Files.size(file.toPath()));
+
+            while ((count = inputStream.read(buffer)) > 0){
+                outputStream.write(buffer, 0, count);
+            }
+
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void sendJSON(JSONObject jsonObject, HttpExchange exchange) throws IOException {
+        sendBytes(jsonObject.toString().getBytes(), exchange);
+    }
+
+    public void sendBytes(byte[] data, HttpExchange exchange) throws IOException {
+        OutputStream outputStream = exchange.getResponseBody();
 
         exchange.sendResponseHeaders(statusCode, data.length);
         outputStream.write(data);
 
         outputStream.close();
     }
-
-    public void sendString(String str) {}
-
-    public void sendFile() {}
-
-    public void sendJSON(JSONObject jsonObject) {}
-
-    public void sendBytes(byte[] data) {}
 
     public int getStatusCode() {
         return statusCode;
