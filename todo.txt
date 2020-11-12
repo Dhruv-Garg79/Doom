@@ -12,6 +12,11 @@ Maybe Ideas:
 4. https://medium.com/faun/continuous-integration-of-java-project-with-github-actions-7a8a0e8246ef
 
 Checklist:
+
+3. handle form data
+4. handle all types of content. i.e. text, json, file and etc...
+9. handle sending and receiving all types of data in response and body.
+
 1. handle path parameters in url. e.g.: api/example/resource/{john} - tomorrows priority
     - just got a brilliant idea, instead of coming up with a separate regex pattern which will be useless in this case.
       I just have to convert the route into a regex itself.
@@ -24,9 +29,6 @@ Checklist:
         -the difficulty is this how to pass variable no of parameters to function.
     - Query parameters in Request object e.g. id = req.getQueryParam("id");
         -this method is much easier to implement
-
-3. handle form data
-4. handle all types of content. i.e. text, json, file and etc...
 
 5. middleware/interceptors - think about design and all/ no idea yet
     choose b/w two:
@@ -43,7 +45,6 @@ Checklist:
 6. handle multithreading properly and other resources
 7. code refactoring and documentation
 8. handle parsing path in controller. if path is api/example/response and controller is api/example then we must check for substring
-9. handle sending and receiving all types of data in response and body.
 
 Points:
 

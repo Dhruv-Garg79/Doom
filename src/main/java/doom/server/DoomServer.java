@@ -27,6 +27,10 @@ public class DoomServer {
             httpServer.start();
             logger.info("started");
 
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                httpServer.stop(0);
+            }));
+
         } catch (IOException e) {
             e.printStackTrace();
         }

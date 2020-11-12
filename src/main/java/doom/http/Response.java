@@ -10,8 +10,6 @@ public class Response {
     String msg;
     int statusCode = 200;
 
-    public Response() {}
-
     public Response(String message) {
         this.msg = message;
     }

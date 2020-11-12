@@ -1,6 +1,7 @@
 package doom.utils;
 
 import doom.http.Controller;
+import doom.http.Request;
 import doom.http.Response;
 import doom.http.Route;
 import doom.http.annotations.*;
@@ -47,6 +48,9 @@ public class AnnotationProcessor {
     }
 
     public void processMethod(Method method, Controller controller, Object obj) {
+        if (!checkValidMethod(method))
+            return;
+
         HttpMethod httpMethod = null;
         String reqPath = "";
 
@@ -100,6 +104,20 @@ public class AnnotationProcessor {
 
             controller.addRoute(route);
         }
+    }
+
+    public boolean checkValidMethod(Method method){
+        if (method.getReturnType() != Response.class){
+            System.out.println(method.getName() + "doesn't return object of Type Response");
+            return false;
+        }
+
+        if (method.getParameterCount() != 1 || method.getParameterTypes()[0] != Request.class){
+            System.out.println("Only one parameter type is allowed of type Request");
+            return false;
+        }
+
+        return true;
     }
 
     public void processMiddleware(MiddleWare middleWare, MiddlewareAdder middlewareAdder){
