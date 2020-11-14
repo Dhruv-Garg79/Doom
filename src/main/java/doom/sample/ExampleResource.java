@@ -19,6 +19,7 @@ public class ExampleResource {
     @POST("/resource")
     @MiddleWare({LogMiddleware.class})
     public Response getNames(Request request) {
+
         System.out.println("Hola senorita... " + request.getPath());
         return new Response("Hello world!");
     }
@@ -35,7 +36,9 @@ public class ExampleResource {
         JSONObject json = new JSONObject();
         json.put("name", request.getPathParam("name"));
         json.put("id", request.getPathParam("id"));
-        return new Response(json);
+        Response response = new Response(json);
+        response.setContentType("application/json");
+        return response;
     }
 
     @GET("/resource/file")

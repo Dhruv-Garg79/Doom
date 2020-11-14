@@ -19,6 +19,7 @@ Checklist:
 3. handle form data
 4. handle all types of content. i.e. text, json, file and etc...
 9. handle sending and receiving all types of data in response and body.
+10. handle receiving body in post request
 
 1. handle path parameters in url. e.g.: api/example/resource/{john} - tomorrows priority
     - just got a brilliant idea, instead of coming up with a separate regex pattern which will be useless in this case.

@@ -3,13 +3,17 @@ package doom.http;
 import com.sun.net.httpserver.HttpExchange;
 import org.json.JSONObject;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 
 public class Response {
     private final Object data;
     private int statusCode = 200;
+    private String contentType = "text/plain";
 
     public Response(String message) {
         this.data = message;
@@ -37,6 +41,8 @@ public class Response {
     }
 
     public void send(HttpExchange exchange) throws IOException {
+        exchange.getResponseHeaders().set("Content-Type", contentType);
+
         if (this.data instanceof String) sendString((String) data, exchange);
         else if (this.data instanceof JSONObject) sendJSON((JSONObject) data, exchange);
         else if (this.data instanceof File) sendFile((File) data, exchange);
@@ -51,21 +57,18 @@ public class Response {
         int count = 0;
         byte[] buffer = new byte[4096];
 
-        try {
-            OutputStream outputStream = exchange.getResponseBody();
-            InputStream inputStream = Files.newInputStream(file.toPath(), StandardOpenOption.READ);
+        try (OutputStream outputStream = exchange.getResponseBody();
+             InputStream inputStream = Files.newInputStream(file.toPath(), StandardOpenOption.READ)) {
 
             exchange.sendResponseHeaders(statusCode, Files.size(file.toPath()));
 
-            while ((count = inputStream.read(buffer)) > 0){
+            while ((count = inputStream.read(buffer)) > 0) {
                 outputStream.write(buffer, 0, count);
             }
 
-            outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private void sendJSON(JSONObject jsonObject, HttpExchange exchange) throws IOException {
@@ -87,5 +90,13 @@ public class Response {
 
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 }
