@@ -19,9 +19,9 @@ public class MiddlewareProcessor {
         middlewareHandlers.add(middleware);
     }
 
-    public boolean process(HttpExchange exchange) throws IOException {
+    public boolean process(Request request) throws IOException {
         Response response = null;
-        Request request = new Request(exchange);
+        HttpExchange exchange = request.getExchange();
 
         for (MiddlewareHandler middleware : middlewareHandlers) {
             response = middleware.handle(request);

@@ -15,6 +15,9 @@ https://medium.com/faun/continuous-integration-of-java-project-with-github-actio
 https://dzone.com/articles/fileinputstream-fileoutputstream-considered-harmful
 
 Checklist:
+- bug: handle a request getting called multiple times.
+    -- source of error: Request object is getting created multiple times in middleware and controller. Each middleware is creating new request object.
+    -- change this implementation to use common request object is each handler i.e. middleware and main one.
 
 3. handle form data
 4. handle all types of content. i.e. text, json, file and etc...

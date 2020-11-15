@@ -3,6 +3,7 @@ package doom.server;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import doom.http.Controller;
+import doom.http.Request;
 import doom.http.Response;
 import doom.middleware.MiddlewareAdder;
 import doom.middleware.MiddlewareHandler;
@@ -24,7 +25,9 @@ public class DoomHttpHandler implements HttpHandler, MiddlewareAdder {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        if (!globalMiddlewareProcessor.process(exchange))
+        Request request = new Request(exchange);
+
+        if (!globalMiddlewareProcessor.process(request))
             return;
 
         Tuple<Controller, String> tuple = getMatchingController(exchange.getRequestURI().getPath());
@@ -32,7 +35,7 @@ public class DoomHttpHandler implements HttpHandler, MiddlewareAdder {
         String path = tuple.second;
 
         if (controller != null) {
-            controller.process(exchange, !path.equals("") ? path : "/");
+            controller.process(request, !path.equals("") ? path : "/");
         } else {
             Response.notFound().send(exchange);
         }

@@ -36,8 +36,6 @@ public class PathUtils {
         Map<String, String> map = new HashMap<>();
         StringBuilder key = new StringBuilder();
 
-        System.out.println(path + ' ' + groupCount);
-
         while (i < n && group < groupCount){
             if (path.charAt(i) == '{'){
                 i++;

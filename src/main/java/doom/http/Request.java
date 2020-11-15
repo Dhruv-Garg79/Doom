@@ -1,7 +1,10 @@
 package doom.http;
 
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +23,25 @@ public class Request {
         method = HttpMethods.valueOf(exchange.getRequestMethod());
 
         queryParams = parseQueryParams(exchange.getRequestURI().getQuery(), false);
+
+        Headers headers = exchange.getRequestHeaders();
+        String bodyContentType = headers.get("Content-Type").get(0);
+        System.out.println(bodyContentType);
+        System.out.println(this.hashCode() + "............................");
+
+        try(InputStream bodyStream = exchange.getRequestBody()){
+            StringBuilder sb = new StringBuilder();
+            int count = 0;
+            byte[] buffer = new byte[4096];
+            while ((count = bodyStream.read(buffer)) > 0){
+                sb.append(new String(buffer));
+            }
+            System.out.println(sb.toString());
+        }
+        catch (IOException e){
+            System.out.println(e.getLocalizedMessage());
+        }
+
     }
 
     public String getPath() {

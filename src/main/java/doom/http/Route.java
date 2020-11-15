@@ -26,7 +26,7 @@ public class Route implements MiddlewareAdder {
     }
 
     public Response processRequest(Request request) throws IOException {
-        if (!middlewareProcessor.process(request.getExchange()))
+        if (!middlewareProcessor.process(request))
             return null;
 
         return handler.handle(request);

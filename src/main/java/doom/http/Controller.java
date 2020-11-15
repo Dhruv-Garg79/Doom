@@ -23,12 +23,13 @@ public class Controller implements MiddlewareAdder {
         middlewareProcessor = new MiddlewareProcessor();
     }
 
-    public void process(HttpExchange exchange, String routePath) throws IOException {
-        if (!middlewareProcessor.process(exchange))
+    public void process(Request request, String routePath) throws IOException {
+        if (!middlewareProcessor.process(request))
             return;
 
+        HttpExchange exchange = request.getExchange();
+
         Response response = null;
-        Request request = new Request(exchange);
         Route route = getMatchingRoute(routePath, request);
 
         if (route != null) {
@@ -50,7 +51,6 @@ public class Controller implements MiddlewareAdder {
             matcher = route.matchPath(path);
             if (route.getMethod().equals(request.getMethod()) && matcher.matches()){
                 Map<String, String> pathParams = PathUtils.extractPathParams(matcher, route.getPath());
-                System.out.println(pathParams);
                 request.setPathParams(pathParams);
 
                 res = route;
