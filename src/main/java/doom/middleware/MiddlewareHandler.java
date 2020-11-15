@@ -1,7 +1,7 @@
 package doom.middleware;
 
-import doom.http.Request;
-import doom.http.Response;
+import doom.models.Request;
+import doom.models.Response;
 
 public interface MiddlewareHandler {
     public Response handle(Request req);

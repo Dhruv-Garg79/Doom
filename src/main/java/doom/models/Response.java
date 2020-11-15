@@ -1,4 +1,4 @@
-package doom.http;
+package doom.models;
 
 import com.sun.net.httpserver.HttpExchange;
 import org.json.JSONObject;

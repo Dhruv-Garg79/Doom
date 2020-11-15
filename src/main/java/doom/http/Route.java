@@ -1,8 +1,11 @@
 package doom.http;
 
+import doom.enums.HttpMethods;
 import doom.middleware.MiddlewareAdder;
 import doom.middleware.MiddlewareHandler;
 import doom.middleware.MiddlewareProcessor;
+import doom.models.Request;
+import doom.models.Response;
 import doom.utils.PathUtils;
 
 import java.io.IOException;

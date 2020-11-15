@@ -1,8 +1,8 @@
 package doom.sample;
 
 import doom.middleware.MiddlewareHandler;
-import doom.http.Request;
-import doom.http.Response;
+import doom.models.Request;
+import doom.models.Response;
 
 public class LogMiddleware implements MiddlewareHandler {
     @Override

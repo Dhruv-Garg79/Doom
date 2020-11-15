@@ -1,4 +1,4 @@
-package doom.http;
+package doom.enums;
 
 public enum HttpMethods {
     GET,

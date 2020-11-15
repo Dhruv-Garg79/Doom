@@ -1,8 +1,8 @@
 package doom.middleware;
 
 import com.sun.net.httpserver.HttpExchange;
-import doom.http.Request;
-import doom.http.Response;
+import doom.models.Request;
+import doom.models.Response;
 
 import java.io.IOException;
 import java.util.ArrayList;

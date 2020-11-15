@@ -1,74 +1,38 @@
 package doom.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
+import doom.enums.DirectoryType;
+import doom.models.Directory;
+import doom.services.ClassLocator;
+import doom.services.ClassLocatorForDirImpl;
+import doom.services.ClassLocatorForJarImpl;
+import doom.services.DirectoryResolverImpl;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarInputStream;
 
 public class Utils {
-    public static final List<Class<?>> getClassesInPackage(String packageName) {
-        String path = packageName.replaceAll("\\.", File.separator);
-        List<Class<?>> classes = new ArrayList<>();
-        String[] classPathEntries =
-                System.getProperty("java.class.path").split(System.getProperty("path.separator"));
+    public static List<Class<?>> getAllClasses(Class<?> projectClass) {
+        Directory directory = new DirectoryResolverImpl().resolveDirectory(projectClass);
+        System.out.println(directory);
 
-        String name;
-        for (String classpathEntry : classPathEntries) {
-            if (classpathEntry.endsWith(".jar")) {
-                File jar = new File(classpathEntry);
-                try {
-                    JarInputStream is = new JarInputStream(new FileInputStream(jar));
-                    JarEntry entry;
-                    while ((entry = is.getNextJarEntry()) != null) {
-                        name = entry.getName();
-                        if (name.endsWith(".class")) {
-                            if (name.contains(path) && name.endsWith(".class")) {
-                                String classPath = name.substring(0, entry.getName().length() - 6);
-                                classPath = classPath.replaceAll("[\\|/]", ".");
-                                classes.add(Class.forName(classPath));
-                            }
-                        }
-                        if (entry.isDirectory()){
-                            System.out.println(entry.getName());
-//                            classes.addAll(getClassesInPackage(file.getName()));
-                        }
-                    }
-                } catch (Exception ex) {
-                    // Silence is gold
-                }
-            } else {
-                try {
-                    File base = new File(classpathEntry + File.separatorChar + path);
-                    for (File file : base.listFiles()) {
-                        name = file.getName();
-                        if (name.endsWith(".class")) {
-                            name = name.substring(0, name.length() - 6);
-                            classes.add(Class.forName(packageName + "." + name));
-                        }
-                        if (file.isDirectory()){
-                            System.out.println(file.getAbsolutePath());
-//                            classes.addAll(getClassesInPackage(file.getName()));
-                        }
-                    }
-                } catch (Exception ex) {
-                    // Silence is gold
-                }
-            }
-        }
+        ClassLocator locator;
+        if (directory.directoryType == DirectoryType.JAR_FILE)
+            locator = new ClassLocatorForJarImpl();
+        else locator = new ClassLocatorForDirImpl();
 
-        return classes;
+        return locator.locateClasses(directory.path);
     }
 
-    public static  <T> Object getObjectForClass(Class<T> mClass){
+    public static <T> Object getObjectForClass(Class<T> mClass) {
         Constructor<T> constructor = null;
         try {
             constructor = mClass.getDeclaredConstructor();
             return constructor.newInstance();
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+        } catch (NoSuchMethodException
+                | IllegalAccessException
+                | InstantiationException
+                | InvocationTargetException e) {
             e.printStackTrace();
         }
 

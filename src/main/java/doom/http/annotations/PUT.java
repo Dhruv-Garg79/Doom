@@ -1,6 +1,6 @@
 package doom.http.annotations;
 
-import doom.http.HttpMethods;
+import doom.enums.HttpMethods;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

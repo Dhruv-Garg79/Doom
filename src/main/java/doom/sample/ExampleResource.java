@@ -1,7 +1,7 @@
 package doom.sample;
 
-import doom.http.Request;
-import doom.http.Response;
+import doom.models.Request;
+import doom.models.Response;
 import doom.http.annotations.GET;
 import doom.http.annotations.POST;
 import doom.http.annotations.Path;
@@ -13,8 +13,6 @@ import java.io.File;
 @MiddleWare({LogMiddleware.class})
 @Path("/api/example")
 public class ExampleResource {
-
-    public ExampleResource(){}
 
     @POST("/resource")
     @MiddleWare({LogMiddleware.class})

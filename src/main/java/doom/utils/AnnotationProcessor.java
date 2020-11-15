@@ -1,14 +1,13 @@
 package doom.utils;
 
 import doom.http.Controller;
-import doom.http.Request;
-import doom.http.Response;
+import doom.models.Request;
+import doom.models.Response;
 import doom.http.Route;
 import doom.http.annotations.*;
 import doom.middleware.MiddleWare;
 import doom.middleware.MiddlewareAdder;
 import doom.middleware.MiddlewareHandler;
-import doom.sample.ExampleResource;
 import doom.server.DoomHttpHandler;
 
 import java.lang.reflect.InvocationTargetException;
@@ -16,15 +15,13 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 public class AnnotationProcessor {
-    public static void startProcessing(DoomHttpHandler handler){
+    public static void startProcessing(Class<?> projectClass, DoomHttpHandler handler){
         AnnotationProcessor annotationProcessor = new AnnotationProcessor();
-        annotationProcessor.loadAllRoutes(annotationProcessor, handler);
+        annotationProcessor.loadAllRoutes(projectClass, annotationProcessor, handler);
     }
 
-    private void loadAllRoutes(AnnotationProcessor annotationProcessor, DoomHttpHandler handler) {
-        //TODO: handle package name i.e. which package name should we use and nested package problem
-        String packageName = ExampleResource.class.getPackageName();
-        List<Class<?>> classes = Utils.getClassesInPackage(packageName);
+    private void loadAllRoutes(Class<?> projectClass, AnnotationProcessor annotationProcessor, DoomHttpHandler handler) {
+        List<Class<?>> classes = Utils.getAllClasses(projectClass);
 
         for (Class<?> mClass : classes) {
             Path path = mClass.getAnnotation(Path.class);

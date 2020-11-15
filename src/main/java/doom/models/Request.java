@@ -1,7 +1,8 @@
-package doom.http;
+package doom.models;
 
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
+import doom.enums.HttpMethods;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -15,6 +15,8 @@ https://medium.com/faun/continuous-integration-of-java-project-with-github-actio
 https://dzone.com/articles/fileinputstream-fileoutputstream-considered-harmful
 
 Checklist:
+- feat: handle getting all classes from project.
+- bug: handling response masking by notfound in route middleware error.
 - bug: handle a request getting called multiple times.
     -- source of error: Request object is getting created multiple times in middleware and controller. Each middleware is creating new request object.
     -- change this implementation to use common request object is each handler i.e. middleware and main one.
