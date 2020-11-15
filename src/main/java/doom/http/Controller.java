@@ -35,12 +35,12 @@ public class Controller implements MiddlewareAdder {
         if (route != null) {
             response = route.processRequest(request);
         }
-
-        if (response == null){
+        else{
             response = Response.notFound();
         }
 
-        response.send(exchange);
+        if (response != null)
+            response.send(exchange);
     }
 
     public Route getMatchingRoute(String path, Request request) {
