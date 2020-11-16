@@ -15,22 +15,24 @@ https://medium.com/faun/continuous-integration-of-java-project-with-github-actio
 https://dzone.com/articles/fileinputstream-fileoutputstream-considered-harmful
 
 Checklist:
+- handle all types of content. i.e. text, json, file, form-data and etc...
+    -- this gave a pretty good headache, I was trying to use multiple instances, object reference and generics directly
+    -- but the solution was to use a wrapper class with generics
+
+- handle sending and receiving all types of data in response and body.
+- handle receiving body in post request
+
 - feat: handle getting all classes from project.
 - bug: handling response masking by notfound in route middleware error.
 - bug: handle a request getting called multiple times.
     -- source of error: Request object is getting created multiple times in middleware and controller. Each middleware is creating new request object.
     -- change this implementation to use common request object is each handler i.e. middleware and main one.
 
-3. handle form data
-4. handle all types of content. i.e. text, json, file and etc...
-9. handle sending and receiving all types of data in response and body.
-10. handle receiving body in post request
-
-1. handle path parameters in url. e.g.: api/example/resource/{john} - tomorrows priority
+- handle path parameters in url. e.g.: api/example/resource/{john} - tomorrows priority
     - just got a brilliant idea, instead of coming up with a separate regex pattern which will be useless in this case.
       I just have to convert the route into a regex itself.
 
-2. handle query parameters in url. e.g. api/example?user=john
+- handle query parameters in url. e.g. api/example?user=john
     choose b/w options:
 
     - Query parameters in function paramters e.g. getName(Request req, @QueryParam("id") id);
@@ -39,7 +41,7 @@ Checklist:
     - Query parameters in Request object e.g. id = req.getQueryParam("id");
         -this method is much easier to implement
 
-5. middleware/interceptors - think about design and all/ no idea yet
+- middleware/interceptors - think about design and all/ no idea yet
     choose b/w two:
 
     - Middleware defined separately acc to path
@@ -51,14 +53,14 @@ Checklist:
         - and a @MiddleWare which will be applied to class or route method and takes list of middlewares in order.
         - also give option for global middleware with server object
 
-6. handle multithreading properly and other resources
-7. code refactoring and documentation
-8. handle parsing path in controller. if path is api/example/response and controller is api/example then we must check for substring
+- handle multithreading properly and other resources
+- code refactoring and documentation
+- handle parsing path in controller. if path is api/example/response and controller is api/example then we must check for substring
 
 Points:
 
-1. POST request will have path param but no query param. It will also have body.
-2. GET req can't have body.
+- POST request will have path param but no query param. It will also have body.
+- GET req can't have body.
 
 *Note:
 GET is idempotent(meaning multiple requests won't change the state of the server) but POST, PUT, DELETE are not because they do change state.

@@ -179,4 +179,4 @@ server.addGlobalMiddleWare(req -> {
 ```
 
 **Note:**
-Middleware will only allow request to go further if 200 response is returned in middleware.
+Middleware will only allow request to go further if 200 status code is returned in middleware.

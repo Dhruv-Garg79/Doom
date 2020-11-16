@@ -3,6 +3,8 @@ package doom.models;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import doom.enums.HttpMethods;
+import doom.enums.MediaType;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +17,7 @@ public class Request {
     private String path;
     private HttpMethods method;
     private Map<String, String> pathParams;
+    private RequestBody<?> requestBody;
 
     public Request(HttpExchange exchange) {
         this.exchange = exchange;
@@ -24,24 +27,7 @@ public class Request {
 
         queryParams = parseQueryParams(exchange.getRequestURI().getQuery(), false);
 
-        if (exchange.getRequestHeaders() != null) {
-            Headers headers = exchange.getRequestHeaders();
-            String bodyContentType = headers.get("Content-Type").get(0);
-            System.out.println(bodyContentType);
-            System.out.println(this.hashCode() + "............................");
-
-            try (InputStream bodyStream = exchange.getRequestBody()) {
-                StringBuilder sb = new StringBuilder();
-                int count = 0;
-                byte[] buffer = new byte[4096];
-                while ((count = bodyStream.read(buffer)) > 0) {
-                    sb.append(new String(buffer));
-                }
-                System.out.println(sb.toString());
-            } catch (IOException e) {
-                System.out.println(e.getLocalizedMessage());
-            }
-        }
+        if (exchange.getRequestHeaders().get("Content-Type") != null) parseBody();
     }
 
     public String getPath() {
@@ -72,7 +58,39 @@ public class Request {
         return pathParams.get(key);
     }
 
-    public Map<String, String> parseQueryParams(String path, boolean isRawPath) {
+    public RequestBody<?> getBody() {
+        return requestBody;
+    }
+
+    private void parseBody() {
+        Headers headers = exchange.getRequestHeaders();
+        String bodyContentType = headers.get("Content-Type").get(0);
+        System.out.println(this.hashCode() + "............................");
+
+        try (InputStream bodyStream = exchange.getRequestBody()) {
+            StringBuilder sb = new StringBuilder();
+            int count = 0;
+            byte[] buffer = new byte[4096];
+            while ((count = bodyStream.read(buffer)) > 0) {
+                sb.append(new String(buffer));
+            }
+
+            if (bodyContentType.equals(MediaType.JSON.getVal())) {
+                requestBody = new RequestBody<>(new JSONObject(sb.toString()));
+            }
+            else if (bodyContentType.equals(MediaType.FORM_URLENCODED.getVal())) {
+                requestBody = new RequestBody<>(parseQueryParams(sb.toString(), false));
+            }
+            else {
+                requestBody = new RequestBody<>(sb.toString());
+            }
+
+        } catch (IOException e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+    }
+
+    private Map<String, String> parseQueryParams(String path, boolean isRawPath) {
         Map<String, String> map = new HashMap<>();
 
         if (path == null || path.isBlank()) return map;

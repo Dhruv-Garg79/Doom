@@ -17,6 +17,7 @@ public class ExampleResource {
     @POST("/resource")
     @MiddleWare({LogMiddleware.class})
     public Response getNames(Request request) {
+        System.out.println(request.getBody());
         return new Response("Hello world!");
     }
 
