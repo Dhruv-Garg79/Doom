@@ -33,7 +33,8 @@ public class Request {
 
         queryParams = parseQueryParams(exchange.getRequestURI().getQuery(), false);
 
-        if (exchange.getRequestHeaders().get("Content-Type") != null) parseBody();
+        Headers reqHeaders = exchange.getRequestHeaders();
+        if (reqHeaders != null && reqHeaders.get("Content-Type") != null) parseBody();
     }
 
     public String getPath() {
@@ -73,20 +74,19 @@ public class Request {
         String contentType = headers.get("Content-Type").get(0);
         System.out.println(contentType);
 
-        if (contentType.contains(MediaType.FORM_DATA.getVal()))
-            parseMultipartBody();
-        else
-            parseBodyOthers(contentType);
+        if (contentType.contains(MediaType.FORM_DATA.getVal())) parseMultipartBody();
+        else parseBodyOthers(contentType);
     }
 
-    private void parseMultipartBody(){
+    private void parseMultipartBody() {
         DiskFileItemFactory d = new DiskFileItemFactory();
         ServletFileUpload fileUpload = new ServletFileUpload(d);
         try {
-            List<FileItem> result = fileUpload.parseRequest(new HttpExchangeRequestContext(this.exchange));
+            List<FileItem> result =
+                    fileUpload.parseRequest(new HttpExchangeRequestContext(this.exchange));
 
             MultiPart multiPart = new MultiPart();
-            for (FileItem fileItem : result){
+            for (FileItem fileItem : result) {
                 multiPart.put(fileItem);
             }
 
@@ -97,7 +97,7 @@ public class Request {
         }
     }
 
-    private void parseBodyOthers(String contentType){
+    private void parseBodyOthers(String contentType) {
         try (InputStream bodyStream = exchange.getRequestBody()) {
             StringBuilder sb = new StringBuilder();
             byte[] buffer = new byte[4096];
@@ -107,11 +107,9 @@ public class Request {
 
             if (contentType.equals(MediaType.JSON.getVal())) {
                 requestBody = new RequestBody<>(new JSONObject(sb.toString()));
-            }
-            else if (contentType.equals(MediaType.FORM_URLENCODED.getVal())) {
+            } else if (contentType.equals(MediaType.FORM_URLENCODED.getVal())) {
                 requestBody = new RequestBody<>(parseQueryParams(sb.toString(), false));
-            }
-            else {
+            } else {
                 requestBody = new RequestBody<>(sb.toString());
             }
 
