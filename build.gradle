@@ -17,6 +17,8 @@ dependencies {
     testImplementation 'surefire:surefire:1.4'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+    implementation 'commons-fileupload:commons-fileupload:1.4'
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
 }
 
 // used for checking JAR class locator implementation.

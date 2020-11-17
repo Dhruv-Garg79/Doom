@@ -105,7 +105,6 @@ public class AnnotationProcessor {
 
     public boolean checkValidMethod(Method method){
         if (method.getReturnType() != Response.class){
-            System.out.println(method.getName() + "doesn't return object of Type Response");
             return false;
         }
 

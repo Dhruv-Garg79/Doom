@@ -1,11 +1,12 @@
 package doom.sample;
 
-import doom.models.Request;
-import doom.models.Response;
 import doom.http.annotations.GET;
 import doom.http.annotations.POST;
 import doom.http.annotations.Path;
 import doom.middleware.MiddleWare;
+import doom.models.MultiPart;
+import doom.models.Request;
+import doom.models.Response;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -16,8 +17,22 @@ public class ExampleResource {
 
     @POST("/resource")
     @MiddleWare({LogMiddleware.class})
-    public Response getNames(Request request) {
-        System.out.println(request.getBody());
+    public Response postExample(Request request) {
+        System.out.println(request.getRequestBody());
+        return new Response("Hello world!");
+    }
+
+    @POST("/resource/multi")
+    @MiddleWare({LogMiddleware.class})
+    public Response postExampleWithMulti(Request request) {
+        MultiPart body = (MultiPart) request.getRequestBody().getBody();
+        System.out.println(body.getText("name"));
+
+        File file = body.getFile("file");
+
+        System.out.println(file.getName());
+        System.out.println(file.getAbsolutePath());
+
         return new Response("Hello world!");
     }
 

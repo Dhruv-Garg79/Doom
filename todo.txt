@@ -15,12 +15,10 @@ https://medium.com/faun/continuous-integration-of-java-project-with-github-actio
 https://dzone.com/articles/fileinputstream-fileoutputstream-considered-harmful
 
 Checklist:
-- handle all types of content. i.e. text, json, file, form-data and etc...
+- MultiPart form-data support in both request and response
+- handle all types of content. i.e. text, json, file, and etc...
     -- this gave a pretty good headache, I was trying to use multiple instances, object reference and generics directly
     -- but the solution was to use a wrapper class with generics
-
-- handle sending and receiving all types of data in response and body.
-- handle receiving body in post request
 
 - feat: handle getting all classes from project.
 - bug: handling response masking by notfound in route middleware error.
