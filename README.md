@@ -119,6 +119,24 @@ Request.getQueryParam("param") //returns value of query param if it exists else 
 ```
 
 ## Form Data
+To access Form Data, we use `getRequestBody` method of Request Class. Form data contains String and File as value.
+
+```java
+@POST("/resource/multi")
+public Response postExampleWithForm(Request request) {
+    MultiPart body = (MultiPart) request.getRequestBody().getBody();
+    System.out.println(body.getText("name"));
+
+    File file = body.getFile("file");
+
+    System.out.println(file.getName());
+    System.out.println(file.getAbsolutePath());
+
+    return new Response("Hello world!");
+}
+```
+
+***Note**: The File received from `MultiPart.getFile()` is a Temporary file and one must save it to desired path if required. 
 
 ## Request Class
 This class is used to access:
