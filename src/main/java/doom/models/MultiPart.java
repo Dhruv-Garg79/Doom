@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class MultiPart {
     private final Map<String, Object> map;
@@ -16,17 +17,29 @@ public class MultiPart {
     }
 
     public String getText(String key) {
-        if (!map.containsKey(key))
+        if (!map.containsKey(key) || !(map.get(key) instanceof String))
             return null;
 
         return (String) map.get(key);
     }
 
     public File getFile(String key) {
-        if (!map.containsKey(key))
+        if (!map.containsKey(key) || !(map.get(key) instanceof File))
             return null;
 
         return (File) map.get(key);
+    }
+
+    public Set<Map.Entry<String, Object>> entrySet(){
+        return map.entrySet();
+    }
+
+    public void put(String key, String value){
+        map.put(key, value);
+    }
+
+    public void put(String key, File value){
+        map.put(key, value);
     }
 
     public void put(FileItem item) throws IOException {

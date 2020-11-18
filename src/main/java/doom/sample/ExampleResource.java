@@ -53,6 +53,20 @@ public class ExampleResource {
         return response;
     }
 
+    @GET("/resource/multi")
+    public Response getExampleWithForm(Request request) {
+        MultiPart form = new MultiPart();
+        form.put("firstName", "Dhruv");
+
+        File file = new File("/home/dhruv/IdeaProjects/Framework/java-doom/src/main/java/doom/sample/Application.java");
+        form.put("file", file);
+
+        File image = new File("/home/dhruv/Pictures/my_iamge.jpeg");
+        form.put("image", image);
+
+        return new Response(form);
+    }
+
     @GET("/resource/file")
     public Response file(Request request) {
         File file = new File("/home/dhruv/IdeaProjects/Framework/java-doom/src/main/java/doom/sample/Application.java");
