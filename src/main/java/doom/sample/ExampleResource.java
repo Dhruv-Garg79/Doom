@@ -38,13 +38,13 @@ public class ExampleResource {
 
     @GET("/resource")
     public Response getNamesWithQuery(Request request) {
-        System.out.println("Hola senorita... " + request.getQueryParam("id"));
+        System.out.println("id " + request.getQueryParam("id"));
         return new Response("Hello world!");
     }
 
     @GET("/resource/{name}/{id}")
     public Response getNamesWithPathParam(Request request) {
-        System.out.println("Hola senorita... " + request.getPathParam("name"));
+        System.out.println("name " + request.getPathParam("name"));
         JSONObject json = new JSONObject();
         json.put("name", request.getPathParam("name"));
         json.put("id", request.getPathParam("id"));
@@ -75,7 +75,7 @@ public class ExampleResource {
 
     @GET("/resource/{name}/family/{members}")
     public Response getNamesWithPathParam2(Request request) {
-        System.out.println("Hola senorita... " + request.getPathParam("name"));
+        System.out.println("name: " + request.getPathParam("name"));
         System.out.println(request.getPathParam("members") + ' ' + request.getQueryParam("id"));
         return new Response("Hello world!");
     }

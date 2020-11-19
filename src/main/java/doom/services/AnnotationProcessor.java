@@ -1,4 +1,4 @@
-package doom.utils;
+package doom.services;
 
 import doom.http.Controller;
 import doom.models.Request;
@@ -9,6 +9,7 @@ import doom.middleware.MiddleWare;
 import doom.middleware.MiddlewareAdder;
 import doom.middleware.MiddlewareHandler;
 import doom.server.DoomHttpHandler;
+import doom.utils.Utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

@@ -1,4 +1,4 @@
-package doom.utils;
+package doom.models;
 
 public class Tuple<T, K> {
     public T first;

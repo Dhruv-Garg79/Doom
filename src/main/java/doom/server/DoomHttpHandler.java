@@ -8,7 +8,7 @@ import doom.models.Response;
 import doom.middleware.MiddlewareAdder;
 import doom.middleware.MiddlewareHandler;
 import doom.middleware.MiddlewareProcessor;
-import doom.utils.Tuple;
+import doom.models.Tuple;
 
 import java.io.IOException;
 import java.util.ArrayList;
