@@ -22,7 +22,7 @@ A simple minimal java web framework. It's a web framework which I have created s
 ```java
 class Application {
     public static void main(String[] args) {
-        DoomServer server = new DoomServer();
+        DoomServer server = new DoomServer(Application.class);
         server.start();
     }
 }
